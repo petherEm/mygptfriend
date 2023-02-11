@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 
 const Home = () => {
@@ -46,20 +46,24 @@ const Home = () => {
 
     if (prompt) {
       console.log(prompt);
+      
+
       try {
         const response = await fetch(
           "/api/fetchAnswers?prompt=" + encodeURIComponent(prompt)
         );
 
         const body = await response.json();
-
+        
         setAnswers(body.quote);
+        typeText(document.getElementById("answer"), answers);
       } catch (error) {
         console.log(error);
       } finally {
         setPrompt("");
       }
     } else {
+
       alert("Please enter a prompt");
       setPrompt("Say random joke.");
     }
@@ -67,7 +71,6 @@ const Home = () => {
 
   return (
     <>
-     
       <div className="">
         <main className="max-w-6xl p-10 mx-auto mt-32 flex flex-col mb-10">
           <h1 className="text-4xl font-bold">Hi,</h1>
@@ -104,12 +107,15 @@ const Home = () => {
                 buddy:
               </h1>
               <div className="p-2">
-                {answers && <p className="text-green-300">{answers}</p>}
+                {answers && (
+                  <p id="answer" className="text-green-300">
+                    
+                  </p>
+                )}
               </div>
             </div>
           </section>
         </main>
-
       </div>
     </>
   );
